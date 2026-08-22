@@ -39,9 +39,7 @@ def cli():
         error_handling(args[1],args[2],args[3])
         file, rails, offset, direction = args[0], int(args[1]), int(args[2]), args[3]
         file_type = pathlib.Path(file).suffix
-        if file_type.lower() == ".txt":
-            pass
-        else:
+        if file_type.lower() != ".txt":
             raise NotImplementedError("File type not supported in this version")
         if arguments.encrypt_file:
             print("encrypting file ...")
@@ -56,9 +54,7 @@ def cli():
         error_handling(args[1], args[2], args[3])
         image, rails, offset, direction = args[0], int(args[1]), int(args[2]), args[3]
         file_type = pathlib.Path(image).suffix
-        if file_type.lower() in [".jpeg",".png",".jpg"]:
-            pass
-        else:
+        if file_type.lower() not in [".jpeg",".png",".jpg"]:
             raise NotImplementedError("File type not supported in this version")
         if arguments.glitch:
             print("creating glitched image ...")
