@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-from encryption_engine import EncryptionEngine
+
+from CLI import cli
+from core_functions import sudo
 
 def main ():
-    pass
-    print("hex weave is ready")
+    sudo()
+    cli()
 
 if __name__ == '__main__':
     main()

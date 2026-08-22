@@ -1,9 +1,9 @@
-import os,sys,argparse
-from helper_functions import error_handling
+import argparse
+from support_funcs import error_handling
+from core_functions import *
 
 def cli():
-    if os.geteuid() != 0:
-        sys.exit("You must have root privileges to use this script.")
+
     parser = argparse.ArgumentParser(
         description="ByteShatter - Multi-Engine Glitch-Art & Byte-lvl-cryptography tool",
         usage="whispershuffle2 <mode> [arguments]"
@@ -27,12 +27,13 @@ def cli():
         args= arguments.encrypt or arguments.decrypt
         error_handling(args[1],args[2],args[3])
         message,rails,offset,direction=args[0],int(args[1]),int(args[2]),args[3]
+        engine=EncryptionEngine(rails,offset,direction)
         if arguments.encrypt:
             print("encrypting ...")
-            print(f"result: '{encrypt(message,rails,offset,direction)}'")
+            print(f"result: '{engine.encrypt(message)}'")
         elif arguments.decrypt:
             print("decrypting ...")
-            print(f"result: '{decrypt(message,rails,offset,direction)}'")
+            print(f"result: '{engine.decrypt(message)}'")
     if arguments.mode=="shatter":
         args= arguments.encrypt_file or arguments.decrypt_file
         error_handling(args[1],args[2],args[3])

@@ -1,4 +1,5 @@
-from helper_functions import skipper,get_path
+from tqdm import tqdm
+from support_funcs import *
 
 class EncryptionEngine:
     def __init__(self,rails:int,offset:int,direction:str):
@@ -19,7 +20,7 @@ class EncryptionEngine:
         if self.offset % (2 * (self.rails - 1)) != 0:
             skipper(it, self.rails, self.offset, self.direction)
 
-        for letter in message :
+        for letter in tqdm(message, desc="Progress:", unit="bit", mininterval=0.1) :
             rails[next(it)].append(letter)
         encrypted_bits = "".join("".join(rail) for rail in rails)[::-1]
         encrypted_message = bytearray(int(encrypted_bits[i:i + 8], 2) for i in range(0, len(encrypted_bits), 8))
@@ -60,7 +61,7 @@ class EncryptionEngine:
         decrypted_bits_list = []
         rail_pointers = [0] * self.rails
 
-        for _ in range(len(message)) :
+        for _ in tqdm(range(len(message)), desc="Progress:", unit="bit", mininterval=0.1):
             rail_indx : int = next(it)
             decrypted_bits_list.append(rails[rail_indx][rail_pointers[rail_indx]])
             rail_pointers[rail_indx] += 1
