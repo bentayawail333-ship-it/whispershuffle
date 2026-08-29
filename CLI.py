@@ -5,7 +5,7 @@ from core_functions import *
 def cli():
 
     parser = argparse.ArgumentParser(
-        description="ByteShatter - Multi-Engine Glitch-Art & Byte-lvl-cryptography tool",
+        description="WhisperShuffle - Multi-Engine Glitch-Art & Byte-lvl-cryptography tool",
         usage="whispershuffle2 <mode> [arguments]"
     )
     subparsers = parser.add_subparsers(dest="mode", required=True, help="choose the engine :)")

@@ -1,4 +1,6 @@
 import pathlib,sys,os
+import re
+
 from PIL import Image
 from encryption_engine import EncryptionEngine
 
@@ -62,7 +64,7 @@ def unglitch(file,rails,offset,direction):
         name=pathlib.Path(file).stem
         glitched.save(f"unglitched-{name}.png")
 
-def image_to_hex (file,rails,offset,direction):
+def image_to_hex_nr (file,rails,offset,direction): #havent figured the solution to undo it yet
     engine=EncryptionEngine(rails,offset,direction)
     try:
         image=Image.open(file)
@@ -76,17 +78,46 @@ def image_to_hex (file,rails,offset,direction):
             f.write(shuffled)
         print("file {}-hex.txt saved".format(name))
 
-def hex_to_image (file,rails,offset,direction):
+def hex_to_image_nr (file,rails,offset,direction): # as i said in image to hex
     engine=EncryptionEngine(rails,offset,direction)
     if not os.path.isfile(file):
         print("file not found"); sys.exit(1)
     with open(file,"r") as f:
         message=f.read()
     decrypted_substance= engine.decrypt(message)
+    # decrypted_substance=bytes.fromhex(decrypted_substance)
+    # decrypted_substance=Image.frombytes(decrypted_substance,image.mode,image.size,decrypted_substance)
     ...
     #figure out the return of the decrypt function in ts case then build the image from it
     # also think of a way to include this either by adding a new mode which sucks ass or turn off the required mode
     # and make it run directly idk dude important thing figure it out
+
+def image_to_hex(file,rails,offset,direction):
+    if not os.path.isfile(file):
+        print("file not found"); sys.exit(1)
+    engine=EncryptionEngine(rails,offset,direction)
+    with open(file,"rb") as f:
+        substance=f.read()
+    encrypted_substance= engine.encrypt(substance)
+    name = pathlib.Path(file).stem
+    with open(f"{name}.txt","w") as f:
+        f.write(encrypted_substance)
+
+
+
+def hex_to_image(file,rails,offset,direction):
+    if not os.path.isfile(file):
+        print("file not found"); sys.exit(1)
+    engine=EncryptionEngine(rails,offset,direction)
+    with open(file,"rb") as f:
+        substance=f.read()
+    encrypted_substance= engine.decrypt(substance)
+    encrypted_substance=bytes.fromhex(encrypted_substance)
+    name=pathlib.Path(file).stem
+    with open(f"{name}_b_I.png","wb") as f:
+        f.write(encrypted_substance)
+
+
 
 
 def sudo():
